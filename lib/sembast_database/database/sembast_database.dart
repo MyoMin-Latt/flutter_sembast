@@ -30,11 +30,13 @@ class LocalStorage {
     final dbDir = await getApplicationDocumentsDirectory();
     final dbPath = path.join(dbDir.path, 'sembast.db');
     database = await databaseFactoryIo.openDatabase(dbPath);
+    print('create database');
   }
 
   Future<void> addStudent(StudentModel studentModel) async {
     final localStore = stringMapStoreFactory.store('grade1');
     localStore.record(studentModel.phone).put(database, studentModel.toMap());
+    print('Add student');
   }
 
   Future<void> deleteStudent(String phone) async {
@@ -47,6 +49,7 @@ class LocalStorage {
         ),
       ),
     );
+    print('Delete student');
   }
 
   // TODO: now cannot, need to try
@@ -61,6 +64,8 @@ class LocalStorage {
   // }
 
   Future<List<StudentModel>> getAllStudent() async {
+    print('Get all students');
+    createDatabase();
     final localStore = stringMapStoreFactory.store('grade1');
     // var record1 =
     //     await localStore.record('09002').get(sembastDatabase.database);

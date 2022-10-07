@@ -3,7 +3,6 @@ import 'package:flutter_sembast/sembast_database/pages/add_student.dart';
 import 'package:get/get.dart';
 
 import '../database/sembast_database.dart';
-import '../database/student_model.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,15 +12,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<StudentModel> studentList = [];
   LocalStorage localStorage = LocalStorage();
-
-  Future<void> getStudent() async {
-    var list = await localStorage.getAllStudent();
-    setState(() {
-      studentList = list;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +22,7 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
               onPressed: () {
-                getStudent();
+                localStorage.getAllStudent();
               },
               icon: const Icon(Icons.get_app))
         ],
@@ -39,25 +30,32 @@ class _HomePageState extends State<HomePage> {
       body: FutureBuilder(
         future: localStorage.getAllStudent(),
         builder: (context, snapshot) {
+          print(snapshot);
           if (snapshot.hasData) {
-            return ListView.builder(
-              itemCount: studentList.length,
-              itemBuilder: (context, index) {
-                return Card(
-                  child: ListTile(
-                    title: Text(studentList[index].name),
-                    subtitle: Text(studentList[index].phone),
-                    leading: Text(studentList[index].age),
-                    trailing: IconButton(
-                        onPressed: () {
-                          localStorage.deleteStudent(studentList[index].phone);
-                          setState(() {});
-                        },
-                        icon: const Icon(Icons.delete_forever)),
-                  ),
-                );
-              },
-            );
+            var studentList = snapshot.data;
+            return snapshot.data != null
+                ? ListView.builder(
+                    itemCount: studentList!.length,
+                    itemBuilder: (context, index) {
+                      return Card(
+                        child: ListTile(
+                          title: Text(studentList[index].name),
+                          subtitle: Text(studentList[index].phone),
+                          leading: Text(studentList[index].age),
+                          trailing: IconButton(
+                              onPressed: () {
+                                localStorage
+                                    .deleteStudent(studentList[index].phone);
+                                setState(() {});
+                              },
+                              icon: const Icon(Icons.delete_forever)),
+                        ),
+                      );
+                    },
+                  )
+                : const Center(
+                    child: Text('Not Data in List'),
+                  );
           } else {
             return const Center(
               child: Text('No Data'),
@@ -67,7 +65,8 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Get.to(const AddStudentPage())?.then((value) => getStudent());
+          Get.to(const AddStudentPage())
+              ?.then((value) => localStorage.getAllStudent());
         },
         child: const Icon(Icons.add),
       ),
