@@ -22,7 +22,8 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
               onPressed: () {
-                localStorage.getAllStudent();
+                // localStorage.getAllStudent();
+                setState(() {});
               },
               icon: const Icon(Icons.get_app))
         ],
@@ -30,9 +31,9 @@ class _HomePageState extends State<HomePage> {
       body: FutureBuilder(
         future: localStorage.getAllStudent(),
         builder: (context, snapshot) {
-          print(snapshot);
           if (snapshot.hasData) {
             var studentList = snapshot.data;
+            print(studentList);
             return snapshot.data != null
                 ? ListView.builder(
                     itemCount: studentList!.length,
@@ -45,8 +46,11 @@ class _HomePageState extends State<HomePage> {
                           trailing: IconButton(
                               onPressed: () {
                                 localStorage
-                                    .deleteStudent(studentList[index].phone);
-                                setState(() {});
+                                    .deleteStudent(studentList[index].phone)
+                                    .then((value) {
+                                  localStorage.getAllStudent();
+                                  setState(() {});
+                                });
                               },
                               icon: const Icon(Icons.delete_forever)),
                         ),
@@ -58,15 +62,18 @@ class _HomePageState extends State<HomePage> {
                   );
           } else {
             return const Center(
-              child: Text('No Data'),
+              child: CircularProgressIndicator(),
             );
           }
         },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Get.to(const AddStudentPage())
-              ?.then((value) => localStorage.getAllStudent());
+          Get.to(const AddStudentPage())!.then((value) {
+            print('Back to Home from add student');
+            print('Back value : $value');
+            setState(() {});
+          });
         },
         child: const Icon(Icons.add),
       ),

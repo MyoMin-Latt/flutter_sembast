@@ -26,20 +26,23 @@ class LocalStorage {
     createDatabase();
   }
 
-  Future<void> createDatabase() async {
+  Future<Database> createDatabase() async {
     final dbDir = await getApplicationDocumentsDirectory();
     final dbPath = path.join(dbDir.path, 'sembast.db');
     database = await databaseFactoryIo.openDatabase(dbPath);
     print('create database');
+    return database;
   }
 
   Future<void> addStudent(StudentModel studentModel) async {
+    // database = await createDatabase();
     final localStore = stringMapStoreFactory.store('grade1');
     localStore.record(studentModel.phone).put(database, studentModel.toMap());
     print('Add student');
   }
 
   Future<void> deleteStudent(String phone) async {
+    database = await createDatabase();
     final localStore = stringMapStoreFactory.store('grade1');
     localStore.delete(
       database,
@@ -64,6 +67,7 @@ class LocalStorage {
   // }
 
   Future<List<StudentModel>> getAllStudent() async {
+    database = await createDatabase();
     print('Get all students');
     createDatabase();
     final localStore = stringMapStoreFactory.store('grade1');

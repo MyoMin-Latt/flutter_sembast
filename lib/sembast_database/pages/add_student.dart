@@ -85,7 +85,9 @@ class _AddStudentPageState extends State<AddStudentPage> {
                     log('${nameController.text}/ ${ageController.text}/ ${phoneController.text}');
                     var student = StudentModel(nameController.text,
                         ageController.text, phoneController.text);
-                    localStorage.addStudent(student);
+                    localStorage
+                        .addStudent(student)
+                        .then((value) => localStorage.getAllStudent());
                   }
                   Get.back();
                 },
