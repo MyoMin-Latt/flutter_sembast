@@ -17,17 +17,16 @@ class _AddStudentPageState extends State<AddStudentPage> {
   final nameController = TextEditingController();
   final ageController = TextEditingController();
   final phoneController = TextEditingController();
-  SembastDatabase sembastDatabase = SembastDatabase();
+  LocalStorage localStorage = LocalStorage();
 
-  Future<void> addStudent(StudentModel studentModel) async {
-    LocalStorage localStorage = LocalStorage(sembastDatabase);
-    await localStorage.addStudent(studentModel);
-  }
+  // Future<void> addStudent(StudentModel studentModel) async {
+  //   await localStorage.addStudent(studentModel);
+  // }
 
-  getStudent() {
-    LocalStorage localStorage = LocalStorage(sembastDatabase);
-    localStorage.getAllStudent();
-  }
+  // getStudent() {
+  //   LocalStorage localStorage = LocalStorage();
+  //   localStorage.getAllStudent();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +85,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                     log('${nameController.text}/ ${ageController.text}/ ${phoneController.text}');
                     var student = StudentModel(nameController.text,
                         ageController.text, phoneController.text);
-                    addStudent(student).then((value) => getStudent());
+                    localStorage.addStudent(student);
                   }
                   Get.back();
                 },

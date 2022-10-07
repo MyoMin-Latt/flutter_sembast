@@ -13,14 +13,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  SembastDatabase sembastDatabase = SembastDatabase();
-
   List<StudentModel> studentList = [];
+  LocalStorage localStorage = LocalStorage();
 
   Future<void> getStudent() async {
-    LocalStorage localStorage = LocalStorage(sembastDatabase);
-    studentList = await localStorage.getAllStudent();
-    setState(() {});
+    var list = await localStorage.getAllStudent();
+    setState(() {
+      studentList = list;
+    });
   }
 
   @override
@@ -36,23 +36,38 @@ class _HomePageState extends State<HomePage> {
               icon: const Icon(Icons.get_app))
         ],
       ),
-      body: ListView.builder(
-        itemCount: studentList.length,
-        itemBuilder: (context, index) {
-          return Card(
-            child: ListTile(
-              title: Text(studentList[index].name),
-              subtitle: Text(studentList[index].phone),
-              leading: Text(studentList[index].age),
-              trailing: IconButton(
-                  onPressed: () {}, icon: const Icon(Icons.delete_forever)),
-            ),
-          );
+      body: FutureBuilder(
+        future: localStorage.getAllStudent(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return ListView.builder(
+              itemCount: studentList.length,
+              itemBuilder: (context, index) {
+                return Card(
+                  child: ListTile(
+                    title: Text(studentList[index].name),
+                    subtitle: Text(studentList[index].phone),
+                    leading: Text(studentList[index].age),
+                    trailing: IconButton(
+                        onPressed: () {
+                          localStorage.deleteStudent(studentList[index].phone);
+                          setState(() {});
+                        },
+                        icon: const Icon(Icons.delete_forever)),
+                  ),
+                );
+              },
+            );
+          } else {
+            return const Center(
+              child: Text('No Data'),
+            );
+          }
         },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Get.to(const AddStudentPage());
+          Get.to(const AddStudentPage())?.then((value) => getStudent());
         },
         child: const Icon(Icons.add),
       ),

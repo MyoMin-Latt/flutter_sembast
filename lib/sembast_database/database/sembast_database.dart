@@ -6,9 +6,23 @@ import 'package:sembast/sembast.dart';
 import 'package:sembast/sembast_io.dart';
 
 // Create Sembast Database (NoSQL)
-class SembastDatabase {
+// class SembastDatabase {
+//   late Database database;
+//   SembastDatabase() {
+//     createDatabase();
+//   }
+
+//   Future<void> createDatabase() async {
+//     final dbDir = await getApplicationDocumentsDirectory();
+//     final dbPath = path.join(dbDir.path, 'sembast.db');
+//     database = await databaseFactoryIo.openDatabase(dbPath);
+//   }
+// }
+
+// CRUD Function
+class LocalStorage {
   late Database database;
-  SembastDatabase() {
+  LocalStorage() {
     createDatabase();
   }
 
@@ -17,20 +31,25 @@ class SembastDatabase {
     final dbPath = path.join(dbDir.path, 'sembast.db');
     database = await databaseFactoryIo.openDatabase(dbPath);
   }
-}
-
-// CRUD Function
-class LocalStorage {
-  SembastDatabase sembastDatabase;
-  LocalStorage(this.sembastDatabase);
 
   Future<void> addStudent(StudentModel studentModel) async {
     final localStore = stringMapStoreFactory.store('grade1');
-    localStore
-        .record(studentModel.phone)
-        .put(sembastDatabase.database, studentModel.toMap());
+    localStore.record(studentModel.phone).put(database, studentModel.toMap());
   }
 
+  Future<void> deleteStudent(String phone) async {
+    final localStore = stringMapStoreFactory.store('grade1');
+    localStore.delete(
+      database,
+      finder: Finder(
+        filter: Filter.custom(
+          (record) => record.value['phone'].toString().contains(phone),
+        ),
+      ),
+    );
+  }
+
+  // TODO: now cannot, need to try
   // Stream getStudents() {
   //   final localStore = stringMapStoreFactory.store('grade1');
   //   return localStore.stream(sembastDatabase.database);
@@ -53,7 +72,7 @@ class LocalStorage {
     // Second Record : [Record(grade1, 09001) {name: a, age: 1, phone: 09001}]
 
     var record21 = await localStore.find(
-      sembastDatabase.database,
+      database,
       finder: Finder(
         filter: Filter.custom(
           (record) => record.value['phone'].toString().contains(''),
