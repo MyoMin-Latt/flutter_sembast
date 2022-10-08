@@ -1,8 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_sembast/sembast/database/sembast_database.dart';
-import 'package:flutter_sembast/sembast/database/student_model.dart';
+import 'package:flutter_sembast/sembast_with_phone/database/sembast_database_ph.dart';
+import 'package:flutter_sembast/sembast_with_phone/database/student_model_ph.dart';
 import 'package:get/get.dart';
 
 class AddStudentPage extends StatefulWidget {

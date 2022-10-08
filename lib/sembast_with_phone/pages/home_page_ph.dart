@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_sembast/sembast/pages/add_student.dart';
-import 'package:flutter_sembast/sembast/pages/update_student.dart';
+import 'package:flutter_sembast/sembast_with_phone/pages/add_student_ph.dart';
+import 'package:flutter_sembast/sembast_with_phone/pages/update_student_ph.dart';
 import 'package:get/get.dart';
 
-import '../database/sembast_database.dart';
+import '../database/sembast_database_ph.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
