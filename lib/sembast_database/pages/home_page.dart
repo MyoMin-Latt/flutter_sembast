@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
               localStorage.deleteAllStudent();
               setState(() {});
             },
-            icon: const Icon(Icons.get_app),
+            icon: const Icon(Icons.delete_outline),
           )
         ],
       ),
