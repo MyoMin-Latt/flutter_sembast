@@ -6,6 +6,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const GetMaterialApp(
     home: HomePage(),
+    title: 'NoSQL Sembast',
     debugShowCheckedModeBanner: false,
   ));
 }

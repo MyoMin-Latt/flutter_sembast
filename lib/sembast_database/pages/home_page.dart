@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sembast/sembast_database/pages/add_student.dart';
+import 'package:flutter_sembast/sembast_database/pages/update_student.dart';
 import 'package:get/get.dart';
 
 import '../database/sembast_database.dart';
@@ -21,11 +22,9 @@ class _HomePageState extends State<HomePage> {
         title: const Text('Sembast Database'),
         actions: [
           IconButton(
-              onPressed: () {
-                // localStorage.getAllStudent();
-                setState(() {});
-              },
-              icon: const Icon(Icons.get_app))
+            onPressed: () {},
+            icon: const Icon(Icons.get_app),
+          )
         ],
       ),
       body: FutureBuilder(
@@ -35,28 +34,36 @@ class _HomePageState extends State<HomePage> {
             var studentList = snapshot.data;
             print(studentList);
             return snapshot.data != null
-                ? ListView.builder(
-                    itemCount: studentList!.length,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        child: ListTile(
-                          title: Text(studentList[index].name),
-                          subtitle: Text(studentList[index].phone),
-                          leading: Text(studentList[index].age),
-                          trailing: IconButton(
-                              onPressed: () {
-                                localStorage
-                                    .deleteStudent(studentList[index].phone)
-                                    .then((value) {
-                                  localStorage.getAllStudent();
-                                  setState(() {});
-                                });
-                              },
-                              icon: const Icon(Icons.delete_forever)),
-                        ),
-                      );
-                    },
-                  )
+                ? snapshot.data!.isNotEmpty
+                    ? ListView.builder(
+                        itemCount: studentList!.length,
+                        itemBuilder: (context, index) {
+                          return Card(
+                            child: ListTile(
+                              title: Text(studentList[index].name),
+                              subtitle: Text(studentList[index].phone),
+                              leading: Text(studentList[index].age),
+                              trailing: IconButton(
+                                  onPressed: () {
+                                    localStorage.deleteStudent(
+                                        studentList[index].phone);
+                                    localStorage.getAllStudent();
+                                    setState(() {});
+                                  },
+                                  icon: const Icon(Icons.delete_forever)),
+                              onTap: () => Get.to(UpdateStudentPage(
+                                      studentModel: studentList[index]))!
+                                  .then((value) {
+                                localStorage.getAllStudent();
+                                setState(() {});
+                              }),
+                            ),
+                          );
+                        },
+                      )
+                    : const Center(
+                        child: Text('Empty Data in List'),
+                      )
                 : const Center(
                     child: Text('Not Data in List'),
                   );
@@ -72,6 +79,7 @@ class _HomePageState extends State<HomePage> {
           Get.to(const AddStudentPage())!.then((value) {
             print('Back to Home from add student');
             print('Back value : $value');
+            localStorage.getAllStudent();
             setState(() {});
           });
         },

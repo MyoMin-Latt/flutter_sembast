@@ -22,10 +22,7 @@ import 'package:sembast/sembast_io.dart';
 // CRUD Function
 class LocalStorage {
   late Database database;
-  LocalStorage() {
-    createDatabase();
-  }
-
+  LocalStorage();
   Future<Database> createDatabase() async {
     final dbDir = await getApplicationDocumentsDirectory();
     final dbPath = path.join(dbDir.path, 'sembast.db');
@@ -35,10 +32,26 @@ class LocalStorage {
   }
 
   Future<void> addStudent(StudentModel studentModel) async {
-    // database = await createDatabase();
+    database = await createDatabase();
     final localStore = stringMapStoreFactory.store('grade1');
     localStore.record(studentModel.phone).put(database, studentModel.toMap());
     print('Add student');
+  }
+
+  Future<void> updateStudent(StudentModel studentModel) async {
+    database = await createDatabase();
+    final localStore = stringMapStoreFactory.store('grade1');
+    localStore.update(
+      database,
+      studentModel.toMap(),
+      finder: Finder(
+        filter: Filter.custom(
+          (record) => record.key == studentModel.phone,
+        ),
+      ),
+    );
+    // localStore.record(studentModel.phone).put(database, studentModel.toMap());
+    print('Update student');
   }
 
   Future<void> deleteStudent(String phone) async {
