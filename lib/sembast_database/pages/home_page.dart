@@ -22,7 +22,10 @@ class _HomePageState extends State<HomePage> {
         title: const Text('Sembast Database'),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              localStorage.deleteAllStudent();
+              setState(() {});
+            },
             icon: const Icon(Icons.get_app),
           )
         ],

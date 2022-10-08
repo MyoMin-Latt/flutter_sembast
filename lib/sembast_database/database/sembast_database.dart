@@ -38,36 +38,6 @@ class LocalStorage {
     print('Add student');
   }
 
-  Future<void> updateStudent(StudentModel studentModel) async {
-    database = await createDatabase();
-    final localStore = stringMapStoreFactory.store('grade1');
-    localStore.update(
-      database,
-      studentModel.toMap(),
-      finder: Finder(
-        filter: Filter.custom(
-          (record) => record.key == studentModel.phone,
-        ),
-      ),
-    );
-    // localStore.record(studentModel.phone).put(database, studentModel.toMap());
-    print('Update student');
-  }
-
-  Future<void> deleteStudent(String phone) async {
-    database = await createDatabase();
-    final localStore = stringMapStoreFactory.store('grade1');
-    localStore.delete(
-      database,
-      finder: Finder(
-        filter: Filter.custom(
-          (record) => record.value['phone'].toString().contains(phone),
-        ),
-      ),
-    );
-    print('Delete student');
-  }
-
   // TODO: now cannot, need to try
   // Stream getStudents() {
   //   final localStore = stringMapStoreFactory.store('grade1');
@@ -117,5 +87,42 @@ class LocalStorage {
     // print('Third Record FindKeys : $record3');
     // print('Third Record Record lenth : $recordList');
     // Third Record : [09001, 09002]
+  }
+
+  Future<void> updateStudent(StudentModel studentModel) async {
+    database = await createDatabase();
+    final localStore = stringMapStoreFactory.store('grade1');
+    localStore.update(
+      database,
+      studentModel.toMap(),
+      finder: Finder(
+        filter: Filter.custom(
+          (record) => record.key == studentModel.phone,
+        ),
+      ),
+    );
+    // localStore.record(studentModel.phone).put(database, studentModel.toMap());
+    print('Update student');
+  }
+
+  Future<void> deleteStudent(String phone) async {
+    database = await createDatabase();
+    final localStore = stringMapStoreFactory.store('grade1');
+    localStore.delete(
+      database,
+      finder: Finder(
+        filter: Filter.custom(
+          (record) => record.value['phone'].toString().contains(phone),
+        ),
+      ),
+    );
+    print('Delete student');
+  }
+
+  Future<void> deleteAllStudent() async {
+    database = await createDatabase();
+    final localStore = stringMapStoreFactory.store('grade1');
+    localStore.delete(database);
+    print('Delete all students');
   }
 }
