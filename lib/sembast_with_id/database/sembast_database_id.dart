@@ -118,4 +118,41 @@ class LocalStorageId {
     localStore.delete(database);
     print('Delete all students');
   }
+
+  // filter
+  Future<List<StudentModelId>> getAllStudentByNameAccending() async {
+    database = await createDatabase();
+    print('Get all students');
+    createDatabase();
+    final localStore = stringMapStoreFactory.store('id');
+    var record = await localStore.find(
+      database,
+    );
+    List<StudentModelId> modelList = [];
+    for (var i = 0; i < record.length; i++) {
+      modelList.add(StudentModelId.fromMap(record[i].value));
+    }
+    modelList.sort(
+      (a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()),
+    );
+    return modelList;
+  }
+
+  Future<List<StudentModelId>> getAllStudentByNameDecending() async {
+    database = await createDatabase();
+    print('Get all students');
+    createDatabase();
+    final localStore = stringMapStoreFactory.store('id');
+    var record = await localStore.find(
+      database,
+    );
+    List<StudentModelId> modelList = [];
+    for (var i = 0; i < record.length; i++) {
+      modelList.add(StudentModelId.fromMap(record[i].value));
+    }
+    modelList.sort(
+      (a, b) => b.name.toLowerCase().compareTo(a.name.toLowerCase()),
+    );
+    return modelList;
+  }
 }

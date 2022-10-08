@@ -13,6 +13,7 @@ class HomePageId extends StatefulWidget {
 
 class _HomePageIdState extends State<HomePageId> {
   LocalStorageId localStorage = LocalStorageId();
+  String filterName = 'Default';
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +27,40 @@ class _HomePageIdState extends State<HomePageId> {
               setState(() {});
             },
             icon: const Icon(Icons.delete_outline),
-          )
+          ),
+          PopupMenuButton(
+              icon: const Icon(Icons.filter_list),
+              onSelected: (value) {
+                if (value == 'Default') {
+                  filterName = 'Default';
+                  // localStorage.getAllStudent();
+                  setState(() {});
+                } else if (value == 'Name by Accending') {
+                  // localStorage.getAllStudentByNameAccending();
+                  filterName = 'Name by Accending';
+                  setState(() {});
+                } else if (value == 'Name by Decending') {
+                  // localStorage.getAllStudentByNameDecending();
+                  filterName = 'Name by Decending';
+                  setState(() {});
+                }
+              },
+              itemBuilder: (context) {
+                return [
+                  const PopupMenuItem(
+                    value: "Default",
+                    child: Text("Default"),
+                  ),
+                  const PopupMenuItem(
+                    value: "Name by Accending",
+                    child: Text("Name by Accending"),
+                  ),
+                  const PopupMenuItem(
+                    value: "Name by Decending",
+                    child: Text("Name by Decending"),
+                  ),
+                ];
+              })
         ],
       ),
       body: FutureBuilder(
@@ -36,11 +70,20 @@ class _HomePageIdState extends State<HomePageId> {
             var studentList = snapshot.data;
 
             // soft list with object
-            studentList?.sort(
-              (a, b) {
-                return a.age.toLowerCase().compareTo(b.age.toLowerCase());
-              },
-            );
+            if (filterName == 'Name by Accending') {
+              studentList?.sort(
+                (a, b) {
+                  return a.age.toLowerCase().compareTo(b.age.toLowerCase());
+                },
+              );
+            } else if (filterName == 'Name by Decending') {
+              studentList?.sort(
+                (a, b) {
+                  return b.age.toLowerCase().compareTo(a.age.toLowerCase());
+                },
+              );
+            }
+
             print(studentList);
             return snapshot.data != null
                 ? snapshot.data!.isNotEmpty
