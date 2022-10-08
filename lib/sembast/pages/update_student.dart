@@ -1,8 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_sembast/sembast_database/database/sembast_database.dart';
-import 'package:flutter_sembast/sembast_database/database/student_model.dart';
+import 'package:flutter_sembast/sembast/database/sembast_database.dart';
+import 'package:flutter_sembast/sembast/database/student_model.dart';
 import 'package:get/get.dart';
 
 class UpdateStudentPage extends StatefulWidget {
@@ -74,8 +74,7 @@ class _UpdateStudentPageState extends State<UpdateStudentPage> {
                 readOnly: true,
                 controller: phoneController,
                 decoration: const InputDecoration(
-                  hintText: 'Phone',
-                ),
+                    hintText: 'Phone', suffixText: 'Use for id, Cannot change'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter something';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_sembast/sembast_database/pages/add_student.dart';
-import 'package:flutter_sembast/sembast_database/pages/update_student.dart';
+import 'package:flutter_sembast/sembast/pages/add_student.dart';
+import 'package:flutter_sembast/sembast/pages/update_student.dart';
 import 'package:get/get.dart';
 
 import '../database/sembast_database.dart';
@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sembast Database'),
+        title: const Text('Database With Phone'),
         actions: [
           IconButton(
             onPressed: () {
@@ -47,17 +47,17 @@ class _HomePageState extends State<HomePage> {
                               subtitle: Text(studentList[index].phone),
                               leading: Text(studentList[index].age),
                               trailing: IconButton(
-                                  onPressed: () {
-                                    localStorage.deleteStudent(
+                                  onPressed: () async {
+                                    await localStorage.deleteStudent(
                                         studentList[index].phone);
-                                    localStorage.getAllStudent();
+                                    await localStorage.getAllStudent();
                                     setState(() {});
                                   },
                                   icon: const Icon(Icons.delete_forever)),
                               onTap: () => Get.to(UpdateStudentPage(
                                       studentModel: studentList[index]))!
-                                  .then((value) {
-                                localStorage.getAllStudent();
+                                  .then((value) async {
+                                await localStorage.getAllStudent();
                                 setState(() {});
                               }),
                             ),
@@ -79,10 +79,10 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Get.to(const AddStudentPage())!.then((value) {
+          Get.to(const AddStudentPage())!.then((value) async {
             print('Back to Home from add student');
             print('Back value : $value');
-            localStorage.getAllStudent();
+            await localStorage.getAllStudent();
             setState(() {});
           });
         },
