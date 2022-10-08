@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_sembast/sembast_with_id/pages/home_page_id.dart';
 import 'package:flutter_sembast/sembast_with_phone/pages/home_page_ph.dart';
 import 'package:get/get.dart';
 
@@ -28,11 +29,13 @@ class MyApp extends StatelessWidget {
               onPressed: () {
                 Get.to(const HomePage());
               },
-              child: const Text('Sembast with phone'),
+              child: const Text('Id with phone'),
             ),
             ElevatedButton(
-              onPressed: () {},
-              child: const Text('data'),
+              onPressed: () {
+                Get.to(const HomePageId());
+              },
+              child: const Text('Id with uuid'),
             )
           ],
         ),
