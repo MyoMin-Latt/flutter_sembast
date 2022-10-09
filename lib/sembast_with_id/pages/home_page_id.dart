@@ -33,18 +33,14 @@ class _HomePageIdState extends State<HomePageId> {
               onSelected: (value) {
                 if (value == 'Default') {
                   filterName = 'Default';
-                  // localStorage.getAllStudent();
                   setState(() {});
                 } else if (value == 'Name by Accending') {
-                  // localStorage.getAllStudentByNameAccending();
                   filterName = 'Name by Accending';
                   setState(() {});
                 } else if (value == 'Name by Decending') {
-                  // localStorage.getAllStudentByNameDecending();
                   filterName = 'Name by Decending';
                   setState(() {});
                 } else if (value == 'Age over 20') {
-                  localStorage.getAllStudentAgeOver20();
                   filterName = 'Age over 20';
                   setState(() {});
                 }
@@ -94,12 +90,6 @@ class _HomePageIdState extends State<HomePageId> {
               studentList = studentList
                   ?.where((element) => int.parse(element.age) > 20)
                   .toList();
-              // studentList
-              //     ?.takeWhile((value) => int.parse(value.age) >= 20)
-              //     .toList();
-              // setState(() {});
-              // studentList?.clear();
-              // studentList?.addAll(newList!);
             }
 
             print(studentList);
