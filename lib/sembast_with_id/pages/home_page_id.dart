@@ -43,6 +43,10 @@ class _HomePageIdState extends State<HomePageId> {
                   // localStorage.getAllStudentByNameDecending();
                   filterName = 'Name by Decending';
                   setState(() {});
+                } else if (value == 'Age over 20') {
+                  localStorage.getAllStudentAgeOver20();
+                  filterName = 'Age over 20';
+                  setState(() {});
                 }
               },
               itemBuilder: (context) {
@@ -59,6 +63,10 @@ class _HomePageIdState extends State<HomePageId> {
                     value: "Name by Decending",
                     child: Text("Name by Decending"),
                   ),
+                  const PopupMenuItem(
+                    value: "Age over 20",
+                    child: Text("Age over 20"),
+                  ),
                 ];
               })
         ],
@@ -73,27 +81,37 @@ class _HomePageIdState extends State<HomePageId> {
             if (filterName == 'Name by Accending') {
               studentList?.sort(
                 (a, b) {
-                  return a.age.toLowerCase().compareTo(b.age.toLowerCase());
+                  return a.name.toLowerCase().compareTo(b.name.toLowerCase());
                 },
               );
             } else if (filterName == 'Name by Decending') {
               studentList?.sort(
                 (a, b) {
-                  return b.age.toLowerCase().compareTo(a.age.toLowerCase());
+                  return b.name.toLowerCase().compareTo(a.name.toLowerCase());
                 },
               );
+            } else if (filterName == 'Age over 20') {
+              studentList = studentList
+                  ?.where((element) => int.parse(element.age) > 20)
+                  .toList();
+              // studentList
+              //     ?.takeWhile((value) => int.parse(value.age) >= 20)
+              //     .toList();
+              // setState(() {});
+              // studentList?.clear();
+              // studentList?.addAll(newList!);
             }
 
             print(studentList);
             return snapshot.data != null
-                ? snapshot.data!.isNotEmpty
+                ? studentList!.isNotEmpty
                     ? ListView.builder(
-                        itemCount: studentList!.length,
+                        itemCount: studentList.length,
                         itemBuilder: (context, index) {
                           return InkWell(
                             onTap: () {
                               Get.to(UpdateStudentPageId(
-                                      studentModel: studentList[index]))
+                                      studentModel: studentList![index]))
                                   ?.then((value) async {
                                 await localStorage.getAllStudent();
                                 setState(() {});
@@ -101,7 +119,7 @@ class _HomePageIdState extends State<HomePageId> {
                             },
                             onLongPress: () async {
                               await localStorage
-                                  .deleteStudent(studentList[index].id);
+                                  .deleteStudent(studentList![index].id);
                               await localStorage.getAllStudent();
                               setState(() {});
                             },
@@ -111,7 +129,7 @@ class _HomePageIdState extends State<HomePageId> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(studentList[index].name),
+                                    Text(studentList![index].name),
                                     Text(
                                         '${studentList[index].age}/ ${studentList[index].phone}'),
                                     Text(studentList[index].date),
@@ -121,14 +139,6 @@ class _HomePageIdState extends State<HomePageId> {
                               ),
                             ),
                           );
-                          //     // onTap: () => Get.to(UpdateStudentPageId(
-                          //     //         studentModel: studentList[index]))!
-                          //     //     .then((value) async {
-                          //     //   await localStorage.getAllStudent();
-                          //     //   setState(() {});
-                          //     // }),
-                          //   ),
-                          // );
                         },
                       )
                     : const Center(
