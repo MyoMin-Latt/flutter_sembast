@@ -3,6 +3,7 @@ import 'package:flutter_sembast/sembast_with_id/pages/home_page_id.dart';
 import 'package:flutter_sembast/sembast_with_phone/pages/home_page_ph.dart';
 import 'package:flutter_sembast/sembast_with_provider/pages/home_page_provider.dart';
 import 'package:flutter_sembast/sembast_with_provider/provider/provider.dart';
+import 'package:flutter_sembast/sembast_with_state_notifier_provider/pages/home_page_state_notifier.dart';
 import 'package:get/get.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -48,6 +49,12 @@ class MyApp extends ConsumerWidget {
                 Get.to(const HomePageProvider());
               },
               child: const Text('UUID with provider'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Get.to(const HomePageWithState());
+              },
+              child: const Text('UUID with stateNotifierProvider'),
             )
           ],
         ),
