@@ -1,33 +1,26 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_sembast/sembast_with_phone/database/sembast_database_ph.dart';
-import 'package:flutter_sembast/sembast_with_phone/database/student_model_ph.dart';
 import 'package:get/get.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 
-class AddStudentPage extends StatefulWidget {
-  const AddStudentPage({super.key});
+import '../database/student_model_provider.dart';
+import '../provider/provider.dart';
+
+class AddStudentPageProvider extends ConsumerStatefulWidget {
+  const AddStudentPageProvider({super.key});
 
   @override
-  State<AddStudentPage> createState() => _AddStudentPageState();
+  AddStudentPageProviderState createState() => AddStudentPageProviderState();
 }
 
-class _AddStudentPageState extends State<AddStudentPage> {
+class AddStudentPageProviderState
+    extends ConsumerState<AddStudentPageProvider> {
   final formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final ageController = TextEditingController();
   final phoneController = TextEditingController();
-  LocalStorage localStorage = LocalStorage();
-
-  // Future<void> addStudent(StudentModel studentModel) async {
-  //   await localStorage.addStudent(studentModel);
-  // }
-
-  // getStudent() {
-  //   LocalStorage localStorage = LocalStorage();
-  //   localStorage.getAllStudent();
-  // }
-
+  var uuid = const Uuid();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,14 +71,22 @@ class _AddStudentPageState extends State<AddStudentPage> {
                   return null;
                 },
               ),
+              const SizedBox(height: 10),
               const SizedBox(height: 20),
               ElevatedButton.icon(
                 onPressed: () {
                   if (formKey.currentState!.validate()) {
-                    log('${nameController.text}/ ${ageController.text}/ ${phoneController.text}');
-                    var student = StudentModel(nameController.text,
-                        ageController.text, phoneController.text);
-                    localStorage.addStudent(student);
+                    // log('${nameController.text}/ ${ageController.text}/ ${phoneController.text}');
+                    var student = StudentModelProvider(
+                      uuid.v1(),
+                      nameController.text,
+                      ageController.text,
+                      phoneController.text,
+                      DateFormat('dd-MM-yyyy hh:mm:ss').format(DateTime.now()),
+                    );
+                    // print(student.toJson());
+                    ref.read(localStorageProvider).addStudent(student);
+                    // localStorage.addStudent(student);
                     Get.back();
                   }
                 },

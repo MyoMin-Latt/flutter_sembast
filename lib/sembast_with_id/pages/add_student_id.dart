@@ -95,8 +95,8 @@ class _AddStudentPageIdState extends State<AddStudentPageId> {
                       DateFormat('dd-MM-yyyy hh:mm:ss').format(DateTime.now()),
                     );
                     localStorage.addStudent(student);
+                    Get.back();
                   }
-                  Get.back();
                 },
                 icon: const Icon(Icons.save),
                 label: const Text('Save'),

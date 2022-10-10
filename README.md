@@ -1,6 +1,8 @@
 # flutter_sembast
 
-A new Flutter project.
+A new Flutter project for local storage with sembast database (NoSQL).
+
+- Use with provider
 
 ## Getting Started
 
