@@ -26,7 +26,7 @@ class LocalStorageServiceWithState {
     for (var i = 0; i < record.length; i++) {
       modelList.add(StudentModelWithState.fromMap(record[i].value));
     }
-    print(modelList);
+    // print(modelList);
     return modelList;
   }
 
@@ -64,58 +64,42 @@ class LocalStorageServiceWithState {
     print('Delete all students');
   }
 
-  // filter, not use now
-  // Future<List<StudentModelProvider>> getAllStudentByNameAccending() async {
-  //   database = await createDatabase();
-  //   print('Get all students');
-  //   createDatabase();
-  //   final localStore = stringMapStoreFactory.store('id');
-  //   var record = await localStore.find(
-  //     database,
-  //   );
-  //   List<StudentModelProvider> modelList = [];
-  //   for (var i = 0; i < record.length; i++) {
-  //     modelList.add(StudentModelProvider.fromMap(record[i].value));
-  //   }
-  //   modelList.sort(
-  //     (a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()),
-  //   );
-  //   return modelList;
-  // }
-  // Future<List<StudentModelProvider>> getAllStudentByNameDecending() async {
-  //   database = await createDatabase();
-  //   print('Get all students');
-  //   createDatabase();
-  //   final localStore = stringMapStoreFactory.store('id');
-  //   var record = await localStore.find(
-  //     database,
-  //   );
-  //   List<StudentModelProvider> modelList = [];
-  //   for (var i = 0; i < record.length; i++) {
-  //     modelList.add(StudentModelProvider.fromMap(record[i].value));
-  //   }
-  //   modelList.sort(
-  //     (a, b) => b.name.toLowerCase().compareTo(a.name.toLowerCase()),
-  //   );
-  //   return modelList;
-  // }
-  // Future<List<StudentModelProvider>> getAllStudentAgeOver20() async {
-  //   database = await createDatabase();
-  //   print('Get all students, Age over 20');
-  //   createDatabase();
-  //   final localStore = stringMapStoreFactory.store('id');
-  //   var record = await localStore.find(
-  //     database,
-  //   );
-  //   List<StudentModelProvider> modelList = [];
-  //   for (var i = 0; i < record.length; i++) {
-  //     modelList.add(StudentModelProvider.fromMap(record[i].value));
-  //   }
-  //   var over20List =
-  //       modelList.where((element) => int.parse(element.age) > 20).toList();
-  //   // modelList.takeWhile((value) => int.parse(value.age) > 22).toList(); // Cannot use over ( > 20)
-  //   // print(over20List);
-  //   // print(modelList);
-  //   return over20List;
-  // }
+  Future<List<StudentModelWithState>> getAllStudentByNameAccending() async {
+    print('get All Student ByName Accending');
+    final localStore = stringMapStoreFactory.store('state');
+    var record = await localStore.find(sembastDatabase.database);
+    List<StudentModelWithState> modelList = [];
+    for (var i = 0; i < record.length; i++) {
+      modelList.add(StudentModelWithState.fromMap(record[i].value));
+    }
+    modelList
+        .sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+    return modelList;
+  }
+
+  Future<List<StudentModelWithState>> getAllStudentByNameDecending() async {
+    print('get All Student ByName Decending ');
+    final localStore = stringMapStoreFactory.store('state');
+    var record = await localStore.find(sembastDatabase.database);
+    List<StudentModelWithState> modelList = [];
+    for (var i = 0; i < record.length; i++) {
+      modelList.add(StudentModelWithState.fromMap(record[i].value));
+    }
+    modelList
+        .sort((a, b) => b.name.toLowerCase().compareTo(a.name.toLowerCase()));
+    return modelList;
+  }
+
+  Future<List<StudentModelWithState>> getAllStudentAgeOver20() async {
+    print('Get all students, Age over 20');
+    final localStore = stringMapStoreFactory.store('state');
+    var record = await localStore.find(sembastDatabase.database);
+    List<StudentModelWithState> modelList = [];
+    for (var i = 0; i < record.length; i++) {
+      modelList.add(StudentModelWithState.fromMap(record[i].value));
+    }
+    var over20List =
+        modelList.where((element) => int.parse(element.age) > 20).toList();
+    return over20List;
+  }
 }

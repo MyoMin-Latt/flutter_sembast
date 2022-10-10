@@ -26,4 +26,25 @@ class SembastNotifer extends StateNotifier<SembastState> {
     state =
         data.isEmpty ? const SembastState.empty() : SembastState.success(data);
   }
+
+  Future<void> getAllStudentByNameAccending() async {
+    state = const SembastState.loading();
+    final data = await localStorageService.getAllStudentByNameAccending();
+    state =
+        data.isEmpty ? const SembastState.empty() : SembastState.success(data);
+  }
+
+  Future<void> getAllStudentByNameDecending() async {
+    state = const SembastState.loading();
+    final data = await localStorageService.getAllStudentByNameDecending();
+    state =
+        data.isEmpty ? const SembastState.empty() : SembastState.success(data);
+  }
+
+  Future<void> getAllStudentAgeOver20() async {
+    state = const SembastState.loading();
+    final data = await localStorageService.getAllStudentAgeOver20();
+    state =
+        data.isEmpty ? const SembastState.empty() : SembastState.success(data);
+  }
 }

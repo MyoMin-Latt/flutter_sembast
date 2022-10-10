@@ -50,16 +50,24 @@ class HomePageProviderState extends ConsumerState<HomePageWithState> {
               onSelected: (value) {
                 if (value == 'Default') {
                   filterName = 'Default';
-                  setState(() {});
+                  ref
+                      .read(localStorageStateNotifierProvider.notifier)
+                      .getAllStudents();
                 } else if (value == 'Name by Accending') {
                   filterName = 'Name by Accending';
-                  setState(() {});
+                  ref
+                      .read(localStorageStateNotifierProvider.notifier)
+                      .getAllStudentByNameAccending();
                 } else if (value == 'Name by Decending') {
                   filterName = 'Name by Decending';
-                  setState(() {});
+                  ref
+                      .read(localStorageStateNotifierProvider.notifier)
+                      .getAllStudentByNameDecending();
                 } else if (value == 'Age over 20') {
                   filterName = 'Age over 20';
-                  setState(() {});
+                  ref
+                      .read(localStorageStateNotifierProvider.notifier)
+                      .getAllStudentAgeOver20();
                 }
               },
               itemBuilder: (context) {
